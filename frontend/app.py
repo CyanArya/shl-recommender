@@ -2,7 +2,16 @@ import streamlit as st
 import requests
 import pandas as pd
 from typing import List, Dict, Any
+import sys
+import os
+
+# Add the root directory to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# Now import the recommender
 from backend.recommender import AssessmentRecommender
+
+# Streamlit page config
 st.set_page_config(
     page_title="SHL Assessment Recommender",
     page_icon="📊",
@@ -39,7 +48,7 @@ st.write("""
 Enter a job description or query below to get relevant SHL assessment recommendations.
 """)
 
-# Input card
+# Input form
 with st.form("recommendation_form", clear_on_submit=False):
     query = st.text_area(
         "Job Description or Query",
@@ -74,7 +83,6 @@ def display_recommendations(recommendations: List[Dict[str, Any]]):
         st.info("No recommendations found. Try a different query.")
         return
     df = pd.DataFrame(recommendations)
-    # Make assessment name clickable
     df["Assessment"] = df.apply(
         lambda x: f'<a href="{x["assessment_url"]}" target="_blank">{x["assessment_name"]}</a>', axis=1
     )
