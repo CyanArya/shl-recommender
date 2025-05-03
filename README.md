@@ -1,132 +1,58 @@
-# SHL Assessment Recommendation System
+💡 Problem
+We were tasked with building a system that takes a simple text query like a skill or job role — e.g., “problem solving” or “sales leadership” — and returns relevant assessment recommendations from SHL’s dataset. The output should be returned via an API, in JSON format.
 
-A web application that recommends relevant SHL assessments based on natural language queries or job descriptions.
+🛠️ What I Built
+🔍 Text Matching Model
+I used TF-IDF (Term Frequency–Inverse Document Frequency) to convert all skills and descriptions in the dataset into vectors.
 
-## 🔍 Features
+When a user sends a query, the system compares it against all entries using cosine similarity to find the closest matches.
 
-- Natural language query processing  
-- Recommends up to 10 most relevant SHL assessments  
-- Each recommendation includes:  
-  - Assessment name and URL (linked to SHL's catalog)  
-  - Remote Testing Support (Yes/No)  
-  - Adaptive/IRT Support (Yes/No)  
-  - Duration and Test type  
-  - Description and Skills  
-  - Relevance score  
+🤖 Recommender Engine
+A custom Python class called SHLRecommender reads the CSV data and finds the top N most relevant assessments.
 
-## 🗂️ Project Structure
+For each query, it returns assessment names and URLs.
 
-shl-recommender/
-├── backend/ # FastAPI backend
-│ ├── main.py # API endpoints
-│ └── recommender.py # Recommendation engine
-├── frontend/ # Streamlit frontend
-│ └── app.py # Web interface
-├── data/ # Data files
-│ └── shl_assessment_recommendations.csv
-├── evaluation/ # Evaluation metrics and results
-├── requirements.txt # Python dependencies
-└── README.md # Project documentation
+🌐 FastAPI Backend
+I built a simple API using FastAPI.
 
-bash
+Endpoint: POST /recommend
+
+Payload format:
+
+json
 Copy
 Edit
-
-## ⚙️ Setup and Installation
-
-1. **Clone the repository**
-
-git clone https://github.com/CyanArya/shl-recommender.git
-cd shl-recommender
-Create and activate a virtual environment
-
-bash
-Copy
-Edit
-python -m venv .venv
-.venv\Scripts\activate    # On Windows
-source .venv/bin/activate # On Linux/Mac
-Install dependencies
-
-bash
-Copy
-Edit
-pip install -r requirements.txt
-Start the backend server
-
-bash
-Copy
-Edit
-cd backend
-uvicorn main:app --reload
-Start the frontend
-Open a new terminal and run:
-
-bash
-Copy
-Edit
-cd frontend
-streamlit run app.py
-🧠 API Documentation
-POST /recommend — Get assessment recommendations
-
-Request Body:
+{ "text": "team leadership" }
+Response:
 
 json
 Copy
 Edit
 {
-  "query": "your query",
-  "max_results": 10
+  "recommendations": [
+    { "assessment": "Leadership Potential", "url": "https://shl.com/leadership" },
+    ...
+  ]
 }
-Response: A JSON list of recommended assessments with details
-Evaluation Metrics
-Precision@K: Accuracy of top-K predictions
+🧪 Testing & Deployment
+You can test the API locally using uvicorn:
 
-Mean Reciprocal Rank (MRR): Ranking quality metric
+bash
+Copy
+Edit
+uvicorn main:app --reload
+Errors like malformed CSV rows (e.g., unescaped quotes) are handled gracefully.
 
-Coverage: Percentage of total assessments the model can recommend
+Easily extensible to support fuzzy matching or model upgrades.
 
-Diversity: Variety across recommended items
-
-🛠️ Technical Stack
-Backend: FastAPI (Python 3.8+)
-
-Frontend: Streamlit
-
-ML/NLP: scikit-learn, pandas, NumPy
-
-Data Processing: pandas, NumPy
-
-Evaluation: scikit-learn metrics
-
-🧪 Approach
-1. Data Preprocessing
-Clean and normalize assessment metadata
-
-Extract useful features (skills, test type, etc.)
-
-Generate TF-IDF text embeddings
-
-2. Recommendation Engine
-Use cosine similarity over TF-IDF vectors
-
-Score and rank results based on relevance
-
-Return top-N highest scoring assessments
-
-3. Evaluation
-Train/test split of assessment dataset
-
-Use standard ranking metrics (MRR, Precision@K)
-
-Measure how diverse and comprehensive the recommendations are
-
-⚡ Performance Optimization
-Cached repeated queries for faster lookup
-
-Optimized data loading and vectorization
-
-Used sparse matrices and dictionaries for memory efficiency
-
-Batch recommendation supported using multiprocessing
+📁 Folder Structure
+bash
+Copy
+Edit
+shl-recommender/
+├── backend/
+│   ├── main.py         # FastAPI app
+│   ├── recommender.py  # Core recommendation logic
+│   └── data.csv        # Skill-assessment mappings
+✅ Summary
+In short, this solution converts raw skills data into a smart matching engine that powers a clean, developer-friendly API. It’s modular, lightweight, and ready for production or further enhancement.
