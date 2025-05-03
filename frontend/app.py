@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import pandas as pd
 from typing import List, Dict, Any
-
+from backend.recommender import AssessmentRecommender
 st.set_page_config(
     page_title="SHL Assessment Recommender",
     page_icon="📊",
