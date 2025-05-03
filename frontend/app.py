@@ -64,7 +64,7 @@ with st.form("recommendation_form", clear_on_submit=False):
     )
     submitted = st.form_submit_button("Get Recommendations")
 
-API_URL = "https://shl-recommender-1-rvfj.onrender.com"
+API_URL = "https://shl-recommender-1-rvfj.onrender.com/recommend"
 
 def get_recommendations(query: str, max_results: int) -> List[Dict[str, Any]]:
     try:
