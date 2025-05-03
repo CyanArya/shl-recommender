@@ -80,3 +80,53 @@ Edit
   "max_results": 10
 }
 Response: A JSON list of recommended assessments with details
+Evaluation Metrics
+Precision@K: Accuracy of top-K predictions
+
+Mean Reciprocal Rank (MRR): Ranking quality metric
+
+Coverage: Percentage of total assessments the model can recommend
+
+Diversity: Variety across recommended items
+
+🛠️ Technical Stack
+Backend: FastAPI (Python 3.8+)
+
+Frontend: Streamlit
+
+ML/NLP: scikit-learn, pandas, NumPy
+
+Data Processing: pandas, NumPy
+
+Evaluation: scikit-learn metrics
+
+🧪 Approach
+1. Data Preprocessing
+Clean and normalize assessment metadata
+
+Extract useful features (skills, test type, etc.)
+
+Generate TF-IDF text embeddings
+
+2. Recommendation Engine
+Use cosine similarity over TF-IDF vectors
+
+Score and rank results based on relevance
+
+Return top-N highest scoring assessments
+
+3. Evaluation
+Train/test split of assessment dataset
+
+Use standard ranking metrics (MRR, Precision@K)
+
+Measure how diverse and comprehensive the recommendations are
+
+⚡ Performance Optimization
+Cached repeated queries for faster lookup
+
+Optimized data loading and vectorization
+
+Used sparse matrices and dictionaries for memory efficiency
+
+Batch recommendation supported using multiprocessing
